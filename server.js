@@ -15,7 +15,8 @@ app.use(express.json())
 
 app.get('/movies', async (req, res) => {
     // fazer busca com o mongoose
-    res.send(await Movie.find({title:'Harry Potter'}))
+    res.send(await Movie.find({}))
+
 })
 
 app.post('/movie', async(req,res)=>{
@@ -32,11 +33,16 @@ app.post('/movie', async(req,res)=>{
 
 })
 
-app.delete('/deletemovie', async (req, res) =>{
+app.delete('/deletemovie/:id', async (req, res) =>{
+    const id = req.params.id
+
     // tenta realizar a busca e deleta o documento com o _id especificado, caso não consiga cai no catch
     try{
-        const filme = await Movie.findOneAndDelete({_id:'64cf11830b7cd6c24592dd3b'})
-    
+        // Pega o filme direto da url, encontra o _id dele e deleta esse _id
+        const filme = await Movie.find({title:id})
+        const filme_id = filme[0]._id
+        await Movie.findOneAndDelete({_id:filme_id})
+
         if (filme){
             res.send(await Movie.find({}))
         }
@@ -44,6 +50,14 @@ app.delete('/deletemovie', async (req, res) =>{
         res.send('Erro'+error)
     }
 })
+
+// app.put('/atualizar', (req,res) =>{
+    
+// })
+
+// app.patch('/atualizarAll', (req,res) =>{
+
+// })
 
 // Escuta na porta 3000
 app.listen(3000, () => {
