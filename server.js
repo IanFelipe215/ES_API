@@ -16,7 +16,7 @@ app.use(express.json())
 app.get('/movies', async (req, res) => {
     // fazer busca com o mongoose
     res.send(await Movie.find({}))
-
+    
 })
 
 app.post('/movie', async(req,res)=>{
@@ -51,13 +51,41 @@ app.delete('/deletemovie/:id', async (req, res) =>{
     }
 })
 
-// app.put('/atualizar', (req,res) =>{
-    
-// })
+// Atulizar todas as informações de um filme
+app.put('/atualizarAll/:id', async(req,res) =>{  
+    const id = req.params.id
 
-// app.patch('/atualizarAll', (req,res) =>{
+    const response = req.body
 
-// })
+    try{
+        const update = await Movie.updateOne({title:id},{$set:{title:response.title,author:response.author,description:response.description}})
+        if (update.modifiedCount > 0){
+            res.status(200).json({message:'Filme alterado com sucesso'})
+        } else{
+            res.status(404).json({message:'Filme não encontrado'})
+        }
+    }catch (error) {
+        res.status(500)
+    }
+})
+
+// Atualizar informações especificas de um filme
+app.patch('/atualizar/:id', async(req,res) =>{
+    const id = req.params.id
+
+    const response = req.body
+
+    try{
+        await Movie.updateOne({title:id},{$set:response})
+        if (response){
+            res.status(200).json({message:'Filme alterado com sucesso'})
+        } else{
+            res.status(404).json({message:'Filme não encontrado'})
+        }
+    } catch (error) {
+        res.status(500)
+    }
+})
 
 // Escuta na porta 3000
 app.listen(3000, () => {
