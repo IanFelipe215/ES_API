@@ -6,7 +6,7 @@ import routes from "./source/routes.js"
 const app = express()
 
 // Conectando o mongoDB Atlas
-mongoose.connect('mongodb+srv://IanFelipe:Heimerdinger69@iandb.fj1yb5m.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://IanFelipe:{password}@iandb.fj1yb5m.mongodb.net/?retryWrites=true&w=majority')
     .then(() => console.log('Conexão estabelecida'))
     .catch(() => console.log('deu ruim'))
 
