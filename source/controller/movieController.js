@@ -1,6 +1,6 @@
 import Movie from "../tables/movie.js"
 
-class Controller{
+class MovieController{
     async get(req,res){
         res.send(await Movie.find({}))
     }
@@ -76,4 +76,4 @@ class Controller{
     // module.exports = {get,post,del,put,patch}    
 }
 
-export default new Controller
+export default new MovieController
